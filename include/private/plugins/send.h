@@ -37,55 +37,15 @@ namespace lsp
         class send: public plug::Module
         {
             protected:
-                enum mode_t
-                {
-                    CD_MONO,
-                    CD_STEREO,
-                    CD_X2_STEREO
-                };
-
-                typedef struct channel_t
-                {
-                    // DSP processing modules
-                    dspu::Delay         sLine;              // Delay line
-                    dspu::Bypass        sBypass;            // Bypass
-
-                    // Parameters
-                    ssize_t             nDelay;             // Actual delay of the signal
-                    float               fDryGain;           // Dry gain (unprocessed signal)
-                    float               fWetGain;           // Wet gain (processed signal)
-
-                    // Input ports
-                    plug::IPort        *pIn;                // Input port
-                    plug::IPort        *pOut;               // Output port
-                    plug::IPort        *pDelay;             // Delay (in samples)
-                    plug::IPort        *pDry;               // Dry control
-                    plug::IPort        *pWet;               // Wet control
-
-                    // Output ports
-                    plug::IPort        *pOutDelay;          // Output delay time
-                    plug::IPort        *pInLevel;           // Input signal level
-                    plug::IPort        *pOutLevel;          // Output signal level
-                } channel_t;
-
-            protected:
                 size_t              nChannels;          // Number of channels
-                channel_t          *vChannels;          // Delay channels
-                float              *vBuffer;            // Temporary buffer for audio processing
-
-                plug::IPort        *pBypass;            // Bypass
-                plug::IPort        *pGainOut;           // Output gain
-                plug::IPort        *pComment;           // Comment
-
-                uint8_t            *pData;              // Allocated data
 
             protected:
                 void                do_destroy();
 
             public:
                 explicit send(const meta::plugin_t *meta);
-                send (const send &) = delete;
-                send (send &&) = delete;
+                send(const send &) = delete;
+                send(send &&) = delete;
                 virtual ~send() override;
 
                 send & operator = (const send &) = delete;

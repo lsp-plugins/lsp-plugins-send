@@ -44,21 +44,12 @@ namespace lsp
         // NOTE: Port identifiers should not be longer than 7 characters as it will overflow VST2 parameter name buffers
         static const port_t send_mono_ports[] =
         {
-            // Input and output audio ports
             PORTS_MONO_PLUGIN,
 
-            // Input controls
             BYPASS,
-            INT_CONTROL("d_in", "Delay in samples", U_SAMPLES, send::SAMPLES),
-            DRY_GAIN(0.0f),
-            WET_GAIN(1.0f),
             OUT_GAIN,
-            OPT_STRING("comment", "Comment", 128),
-
-            // Output controls
-            METER_MINMAX("d_out", "Delay time in milliseconds", U_MSEC, 0.0f, send::DELAY_OUT_MAX_TIME),
-            METER_GAIN("min", "Input gain", GAIN_AMP_P_48_DB),
-            METER_GAIN("mout", "Output gain", GAIN_AMP_P_48_DB),
+            SEND_NAME("send", "Audio send connection point name"),
+            AUDIO_SEND("sout", "Audio send output", 0, "send"),
 
             PORTS_END
         };
@@ -69,20 +60,11 @@ namespace lsp
             // Input and output audio ports
             PORTS_STEREO_PLUGIN,
 
-            // Input controls
             BYPASS,
-            INT_CONTROL("d_in", "Delay in samples", U_SAMPLES, send::SAMPLES),
-            DRY_GAIN(0.0f),
-            WET_GAIN(1.0f),
             OUT_GAIN,
-            OPT_STRING("comment", "Comment", 128),
-
-            // Output controls
-            METER_MINMAX("d_out", "Delay time in milliseconds", U_MSEC, 0.0f, send::DELAY_OUT_MAX_TIME),
-            METER_GAIN("min_l", "Input gain left",  GAIN_AMP_P_48_DB),
-            METER_GAIN("mout_l", "Output gain left",  GAIN_AMP_P_48_DB),
-            METER_GAIN("min_r", "Input gain right",  GAIN_AMP_P_48_DB),
-            METER_GAIN("mout_r", "Output gain right", GAIN_AMP_P_48_DB),
+            SEND_NAME("send", "Audio send connection point name"),
+            AUDIO_SEND("sout_l", "Audio send output left", 0, "send"),
+            AUDIO_SEND("sout_r", "Audio send output right", 1, "send"),
 
             PORTS_END
         };
@@ -93,28 +75,28 @@ namespace lsp
 
         const meta::bundle_t send_bundle =
         {
-            "send", // TODO: write proper bundle identifier
-            "Plugin Template", // TODO: write proper bundle name
+            "send",
+            "Send",
             B_UTILITIES,
             "", // TODO: provide ID of the video on YouTube
-            "Plugin Template" // TODO: write plugin description, should be the same to the english version in 'bundles.json'
+            "This plugin allows to perform audio send using the shared memory"
         };
 
         const plugin_t send_mono =
         {
-            "Pluginschablone Mono",
-            "Plugin Template Mono",
-            "Plugin Template Mono",
-            "PS1M",
+            "Send Mono",
+            "Send Mono",
+            "Send Mono",
+            "S1M",
             &developers::v_sadovnikov,
             "send_mono",
             {
                 LSP_LV2_URI("send_mono"),
                 LSP_LV2UI_URI("send_mono"),
-                "xxxx",         // TODO: fill valid VST2 ID (4 letters/digits)
+                "s01m",
                 LSP_VST3_UID("ps1m    xxxx"),
                 LSP_VST3UI_UID("ps1m    xxxx"),
-                1,              // TODO: fill valid LADSPA identifier (positive decimal integer)
+                0,
                 LSP_LADSPA_URI("send_mono"),
                 LSP_CLAP_URI("send_mono"),
                 LSP_GST_UID("send_mono"),
@@ -122,9 +104,9 @@ namespace lsp
             LSP_PLUGINS_SEND_VERSION,
             plugin_classes,
             clap_features_mono,
-            E_DUMP_STATE,
+            E_DUMP_STATE | E_SHM_TRACKING,
             send_mono_ports,
-            "template/plugin.xml",
+            "util/send.xml",
             NULL,
             mono_plugin_port_groups,
             &send_bundle
@@ -132,19 +114,19 @@ namespace lsp
 
         const plugin_t send_stereo =
         {
-            "Pluginschablone Stereo",
-            "Plugin Template Stereo",
-            "Plugin Template Stereo",
-            "PS1S",
+            "Send Stereo",
+            "Send Stereo",
+            "Send Stereo",
+            "S1S",
             &developers::v_sadovnikov,
             "send_stereo",
             {
                 LSP_LV2_URI("send_stereo"),
                 LSP_LV2UI_URI("send_stereo"),
-                "yyyy",         // TODO: fill valid VST2 ID (4 letters/digits)
+                "s01s",
                 LSP_VST3_UID("ps1s    yyyy"),
                 LSP_VST3UI_UID("ps1s    yyyy"),
-                2,              // TODO: fill valid LADSPA identifier (positive decimal integer)
+                0,
                 LSP_LADSPA_URI("send_stereo"),
                 LSP_CLAP_URI("send_stereo"),
                 LSP_GST_UID("send_stereo"),
@@ -152,9 +134,9 @@ namespace lsp
             LSP_PLUGINS_SEND_VERSION,
             plugin_classes,
             clap_features_stereo,
-            E_DUMP_STATE,
+            E_DUMP_STATE | E_SHM_TRACKING,
             send_stereo_ports,
-            "template/plugin.xml",
+            "util/send.xml",
             NULL,
             stereo_plugin_port_groups,
             &send_bundle
