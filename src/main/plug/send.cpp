@@ -57,9 +57,18 @@ namespace lsp
         {
             // Compute the number of audio channels by the number of inputs
             nChannels       = 0;
+
             for (const meta::port_t *p = meta->ports; p->id != NULL; ++p)
                 if (meta::is_audio_in_port(p))
                     ++nChannels;
+
+            vChannels       = NULL;
+            fInGain         = GAIN_AMP_M_INF_DB;
+            fSendGain       = GAIN_AMP_M_INF_DB;
+
+            pBypass         = NULL;
+            pInGain         = NULL;
+            pSendGain       = NULL;
         }
 
         send::~send()
@@ -72,6 +81,29 @@ namespace lsp
             // Call parent class for initialization
             Module::init(wrapper, ports);
 
+            size_t to_alloc     = sizeof(channel_t) * nChannels;
+            vChannels           = static_cast<channel_t *>(malloc(to_alloc));
+            if (vChannels == NULL)
+                return;
+
+            size_t port_id      = 0;
+
+            // Bind inputs and outpus
+            lsp_trace("Binding inputs and outputs");
+            for (size_t i=0; i<nChannels; ++i)
+                BIND_PORT(vChannels[i].pIn);
+            for (size_t i=0; i<nChannels; ++i)
+                BIND_PORT(vChannels[i].pOut);
+
+            lsp_trace("Binding common ports");
+            BIND_PORT(pBypass);
+            BIND_PORT(pInGain);
+            BIND_PORT(pSendGain);
+
+            lsp_trace("Binding send ports");
+            SKIP_PORT("Send name");
+            for (size_t i=0; i<nChannels; ++i)
+                BIND_PORT(vChannels[i].pSend);
         }
 
         void send::destroy()
@@ -82,23 +114,41 @@ namespace lsp
 
         void send::do_destroy()
         {
-        }
-
-        void send::update_sample_rate(long sr)
-        {
+            if (vChannels != NULL)
+            {
+                free(vChannels);
+                vChannels       = NULL;
+            }
         }
 
         void send::update_settings()
         {
+            float send_gain     = (pBypass->value() <= 0.5f) ? pSendGain->value() : 0.0f;
+
+            fInGain             = pInGain->value();
+            fSendGain           = send_gain * fInGain;
         }
 
         void send::process(size_t samples)
         {
+            for (size_t i=0; i<nChannels; ++i)
+            {
+                channel_t *c        = &vChannels[i];
+                const float *in     = c->pIn->buffer<float>();
+                float *out          = c->pOut->buffer<float>();
+                float *send         = c->pSend->buffer<float>();
+
+                dsp::mul_k3(out, in, fInGain, samples);
+                if (send != NULL)
+                    dsp::mul_k3(send, in, fSendGain, samples);
+            }
         }
 
         void send::dump(dspu::IStateDumper *v) const
         {
             plug::Module::dump(v);
+
+            // TODO
         }
 
     } /* namespace plugins */

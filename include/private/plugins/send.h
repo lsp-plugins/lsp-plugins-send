@@ -36,8 +36,23 @@ namespace lsp
          */
         class send: public plug::Module
         {
+            private:
+                typedef struct channel_t
+                {
+                    plug::IPort        *pIn;            // Input port
+                    plug::IPort        *pOut;           // Output port
+                    plug::IPort        *pSend;          // Send port
+                } channel_t;
+
             protected:
                 size_t              nChannels;          // Number of channels
+                channel_t          *vChannels;          // Channels
+                float               fInGain;            // Input gain
+                float               fSendGain;          // Send gain
+
+                plug::IPort        *pBypass;            // Bypass port
+                plug::IPort        *pInGain;            // Input gain
+                plug::IPort        *pSendGain;          // Send gain
 
             protected:
                 void                do_destroy();
@@ -55,7 +70,6 @@ namespace lsp
                 virtual void        destroy() override;
 
             public:
-                virtual void        update_sample_rate(long sr) override;
                 virtual void        update_settings() override;
                 virtual void        process(size_t samples) override;
                 virtual void        dump(dspu::IStateDumper *v) const override;

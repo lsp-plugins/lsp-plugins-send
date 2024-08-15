@@ -47,7 +47,8 @@ namespace lsp
             PORTS_MONO_PLUGIN,
 
             BYPASS,
-            OUT_GAIN,
+            IN_GAIN,
+            LOG_CONTROL("g_send", "Send gain", U_GAIN_AMP, send::SEND_GAIN),
             SEND_NAME("send", "Audio send connection point name"),
             AUDIO_SEND("sout", "Audio send output", 0, "send"),
 
@@ -61,7 +62,8 @@ namespace lsp
             PORTS_STEREO_PLUGIN,
 
             BYPASS,
-            OUT_GAIN,
+            IN_GAIN,
+            LOG_CONTROL("g_send", "Send gain", U_GAIN_AMP, send::SEND_GAIN),
             SEND_NAME("send", "Audio send connection point name"),
             AUDIO_SEND("sout_l", "Audio send output left", 0, "send"),
             AUDIO_SEND("sout_r", "Audio send output right", 1, "send"),

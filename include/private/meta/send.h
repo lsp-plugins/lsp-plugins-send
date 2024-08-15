@@ -33,17 +33,10 @@ namespace lsp
     {
         typedef struct send
         {
-            static constexpr float  SAMPLES_MIN         = 0.0f;
-            static constexpr float  SAMPLES_MAX         = 10000.0f;
-            static constexpr float  SAMPLES_DFL         = 0.0f;
-            static constexpr float  SAMPLES_STEP        = 1.0f;
-
-            static constexpr float  TIME_MIN            = 0.0f;
-            static constexpr float  TIME_MAX            = 1000.0f;
-            static constexpr float  TIME_DFL            = 0.0f;
-            static constexpr float  TIME_STEP           = 0.01f;
-
-            static constexpr float  DELAY_OUT_MAX_TIME  = 10000.0f;
+            static constexpr float  SEND_GAIN_MIN       = GAIN_AMP_M_INF_DB;
+            static constexpr float  SEND_GAIN_MAX       = GAIN_AMP_P_24_DB;
+            static constexpr float  SEND_GAIN_DFL       = GAIN_AMP_0_DB;
+            static constexpr float  SEND_GAIN_STEP      = 0.01f;
         } send;
 
         // Plugin type metadata
