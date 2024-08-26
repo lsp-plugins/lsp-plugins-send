@@ -23,6 +23,7 @@
 #include <lsp-plug.in/common/debug.h>
 #include <lsp-plug.in/dsp/dsp.h>
 #include <lsp-plug.in/dsp-units/units.h>
+#include <lsp-plug.in/plug-fw/core/AudioBuffer.h>
 #include <lsp-plug.in/plug-fw/meta/func.h>
 #include <lsp-plug.in/shared/debug.h>
 
@@ -136,7 +137,9 @@ namespace lsp
                 channel_t *c        = &vChannels[i];
                 const float *in     = c->pIn->buffer<float>();
                 float *out          = c->pOut->buffer<float>();
-                float *send         = c->pSend->buffer<float>();
+
+                core::AudioBuffer *send_buf = c->pSend->buffer<core::AudioBuffer>();
+                float *send         = ((send_buf != NULL) && (send_buf->active())) ? send_buf->buffer() : NULL;
 
                 dsp::mul_k3(out, in, fInGain, samples);
                 if (send != NULL)
