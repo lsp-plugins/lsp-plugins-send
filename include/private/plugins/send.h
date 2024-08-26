@@ -48,10 +48,12 @@ namespace lsp
                 size_t              nChannels;          // Number of channels
                 channel_t          *vChannels;          // Channels
                 float               fInGain;            // Input gain
+                float               fOutGain;           // Output gain
                 float               fSendGain;          // Send gain
 
                 plug::IPort        *pBypass;            // Bypass port
                 plug::IPort        *pInGain;            // Input gain
+                plug::IPort        *pOutGain;           // Output gain
                 plug::IPort        *pSendGain;          // Send gain
 
             protected:

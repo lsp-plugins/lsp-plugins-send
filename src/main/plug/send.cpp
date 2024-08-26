@@ -65,10 +65,12 @@ namespace lsp
 
             vChannels       = NULL;
             fInGain         = GAIN_AMP_M_INF_DB;
+            fOutGain        = GAIN_AMP_M_INF_DB;
             fSendGain       = GAIN_AMP_M_INF_DB;
 
             pBypass         = NULL;
             pInGain         = NULL;
+            pOutGain        = NULL;
             pSendGain       = NULL;
         }
 
@@ -99,6 +101,7 @@ namespace lsp
             lsp_trace("Binding common ports");
             BIND_PORT(pBypass);
             BIND_PORT(pInGain);
+            BIND_PORT(pOutGain);
             BIND_PORT(pSendGain);
 
             lsp_trace("Binding send ports");
@@ -127,6 +130,7 @@ namespace lsp
             float send_gain     = (pBypass->value() <= 0.5f) ? pSendGain->value() : 0.0f;
 
             fInGain             = pInGain->value();
+            fOutGain            = pOutGain->value();
             fSendGain           = send_gain * fInGain;
         }
 
@@ -141,9 +145,9 @@ namespace lsp
                 core::AudioBuffer *send_buf = c->pSend->buffer<core::AudioBuffer>();
                 float *send         = ((send_buf != NULL) && (send_buf->active())) ? send_buf->buffer() : NULL;
 
-                dsp::mul_k3(out, in, fInGain, samples);
+                dsp::mul_k3(out, in, fInGain * fOutGain, samples);
                 if (send != NULL)
-                    dsp::mul_k3(send, in, fSendGain, samples);
+                    dsp::mul_k3(send, in, fInGain * fSendGain, samples);
             }
         }
 

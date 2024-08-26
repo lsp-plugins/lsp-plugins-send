@@ -48,6 +48,7 @@ namespace lsp
 
             BYPASS,
             IN_GAIN,
+            OUT_GAIN,
             LOG_CONTROL("g_send", "Send gain", U_GAIN_AMP, send::SEND_GAIN),
             SEND_NAME("send", "Audio send connection point name"),
             AUDIO_SEND("sout", "Audio send output", 0, "send"),
@@ -63,6 +64,7 @@ namespace lsp
 
             BYPASS,
             IN_GAIN,
+            OUT_GAIN,
             LOG_CONTROL("g_send", "Send gain", U_GAIN_AMP, send::SEND_GAIN),
             SEND_NAME("send", "Audio send connection point name"),
             AUDIO_SEND("sout_l", "Audio send output left", 0, "send"),
@@ -71,7 +73,7 @@ namespace lsp
             PORTS_END
         };
 
-        static const int plugin_classes[]       = { C_DELAY, -1 };
+        static const int plugin_classes[]       = { C_UTILITY, -1 };
         static const int clap_features_mono[]   = { CF_AUDIO_EFFECT, CF_UTILITY, CF_MONO, -1 };
         static const int clap_features_stereo[] = { CF_AUDIO_EFFECT, CF_UTILITY, CF_STEREO, -1 };
 
@@ -96,8 +98,8 @@ namespace lsp
                 LSP_LV2_URI("send_mono"),
                 LSP_LV2UI_URI("send_mono"),
                 "s01m",
-                LSP_VST3_UID("ps1m    xxxx"),
-                LSP_VST3UI_UID("ps1m    xxxx"),
+                LSP_VST3_UID("s01m    xxxx"),
+                LSP_VST3UI_UID("s01m    xxxx"),
                 0,
                 LSP_LADSPA_URI("send_mono"),
                 LSP_CLAP_URI("send_mono"),
@@ -126,8 +128,8 @@ namespace lsp
                 LSP_LV2_URI("send_stereo"),
                 LSP_LV2UI_URI("send_stereo"),
                 "s01s",
-                LSP_VST3_UID("ps1s    yyyy"),
-                LSP_VST3UI_UID("ps1s    yyyy"),
+                LSP_VST3_UID("s01s    yyyy"),
+                LSP_VST3UI_UID("s01s    yyyy"),
                 0,
                 LSP_LADSPA_URI("send_stereo"),
                 LSP_CLAP_URI("send_stereo"),
