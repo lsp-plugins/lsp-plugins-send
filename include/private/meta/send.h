@@ -34,9 +34,9 @@ namespace lsp
         typedef struct send
         {
             static constexpr float  SEND_GAIN_MIN       = GAIN_AMP_M_INF_DB;
-            static constexpr float  SEND_GAIN_MAX       = GAIN_AMP_P_24_DB;
+            static constexpr float  SEND_GAIN_MAX       = GAIN_AMP_P_60_DB;
             static constexpr float  SEND_GAIN_DFL       = GAIN_AMP_0_DB;
-            static constexpr float  SEND_GAIN_STEP      = 0.01f;
+            static constexpr float  SEND_GAIN_STEP      = GAIN_AMP_S_0_5_DB;
         } send;
 
         // Plugin type metadata

@@ -29,9 +29,6 @@
 
 #include <private/plugins/send.h>
 
-/* The size of temporary buffer for audio processing */
-#define BUFFER_SIZE         0x1000U
-
 namespace lsp
 {
     namespace plugins
@@ -89,6 +86,21 @@ namespace lsp
             if (vChannels == NULL)
                 return;
 
+            for (size_t i=0; i<nChannels; ++i)
+            {
+                channel_t *c        = &vChannels[i];
+
+                c->sBypass.construct();
+
+                c->pIn              = NULL;
+                c->pOut             = NULL;
+                c->pSend            = NULL;
+
+                c->pInMeter         = NULL;
+                c->pOutMeter        = NULL;
+                c->pSendMeter       = NULL;
+            }
+
             size_t port_id      = 0;
 
             // Bind inputs and outpus
@@ -108,6 +120,16 @@ namespace lsp
             SKIP_PORT("Send name");
             for (size_t i=0; i<nChannels; ++i)
                 BIND_PORT(vChannels[i].pSend);
+
+            lsp_trace("Binding meters");
+            for (size_t i=0; i<nChannels; ++i)
+            {
+                channel_t *c        = &vChannels[i];
+
+                BIND_PORT(c->pInMeter);
+                BIND_PORT(c->pSendMeter);
+                BIND_PORT(c->pOutMeter);
+            }
         }
 
         void send::destroy()
@@ -120,18 +142,39 @@ namespace lsp
         {
             if (vChannels != NULL)
             {
+                for (size_t i=0; i<nChannels; ++i)
+                {
+                    channel_t *c        = &vChannels[i];
+                    c->sBypass.destroy();
+                }
+
                 free(vChannels);
                 vChannels       = NULL;
             }
         }
 
+        void send::update_sample_rate(long sr)
+        {
+            for (size_t i=0; i<nChannels; ++i)
+            {
+                channel_t *c        = &vChannels[i];
+                c->sBypass.init(sr);
+            }
+        }
+
         void send::update_settings()
         {
-            float send_gain     = (pBypass->value() <= 0.5f) ? pSendGain->value() : 0.0f;
+            const bool bypass       = pBypass->value() >= 0.5f;
 
-            fInGain             = pInGain->value();
-            fOutGain            = pOutGain->value();
-            fSendGain           = send_gain * fInGain;
+            fInGain                 = pInGain->value();
+            fOutGain                = pOutGain->value() * fInGain;
+            fSendGain               = pSendGain->value() * fInGain;
+
+            for (size_t i=0; i<nChannels; ++i)
+            {
+                channel_t *c        = &vChannels[i];
+                c->sBypass.set_bypass(bypass);
+            }
         }
 
         void send::process(size_t samples)
@@ -145,9 +188,17 @@ namespace lsp
                 core::AudioBuffer *send_buf = c->pSend->buffer<core::AudioBuffer>();
                 float *send         = ((send_buf != NULL) && (send_buf->active())) ? send_buf->buffer() : NULL;
 
-                dsp::mul_k3(out, in, fInGain * fOutGain, samples);
+                const float ilm     = dsp::abs_max(in, samples);
+                dsp::mul_k3(out, in, fOutGain, samples);
                 if (send != NULL)
-                    dsp::mul_k3(send, in, fInGain * fSendGain, samples);
+                    c->sBypass.process_wet(send, NULL, in, fSendGain, samples);
+
+                if (c->pInMeter != NULL)
+                    c->pInMeter->set_value(ilm * fInGain);
+                if (c->pSendMeter != NULL)
+                    c->pSendMeter->set_value(ilm * fSendGain);
+                if (c->pOutMeter != NULL)
+                    c->pOutMeter->set_value(ilm * fOutGain);
             }
         }
 
@@ -155,7 +206,38 @@ namespace lsp
         {
             plug::Module::dump(v);
 
-            // TODO
+            v->write("nChannels", nChannels);
+            v->begin_array("vChannels", vChannels, nChannels);
+            {
+                for (size_t i=0; i<nChannels; ++i)
+                {
+                    const channel_t *c = &vChannels[i];
+
+                    v->begin_object(c, sizeof(channel_t));
+                    {
+                        v->write_object("sBypass", &c->sBypass);
+
+                        v->write("pIn", c->pIn);
+                        v->write("pOut", c->pOut);
+                        v->write("pSend", c->pSend);
+
+                        v->write("pInMeter", c->pInMeter);
+                        v->write("pOutMeter", c->pOutMeter);
+                        v->write("pSendMeter", c->pSendMeter);
+                    }
+                    v->end_object();
+                }
+            }
+            v->end_array();
+
+            v->write("fInGain", fInGain);
+            v->write("fOutGain", fOutGain);
+            v->write("fSendGain", fSendGain);
+
+            v->write("pBypass", pBypass);
+            v->write("pInGain", pInGain);
+            v->write("pOutGain", pOutGain);
+            v->write("pSendGain", pSendGain);
         }
 
     } /* namespace plugins */

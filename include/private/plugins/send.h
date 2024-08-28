@@ -39,9 +39,15 @@ namespace lsp
             private:
                 typedef struct channel_t
                 {
+                    dspu::Bypass        sBypass;        // Bypass
+
                     plug::IPort        *pIn;            // Input port
                     plug::IPort        *pOut;           // Output port
                     plug::IPort        *pSend;          // Send port
+
+                    plug::IPort        *pInMeter;       // Input level meter
+                    plug::IPort        *pOutMeter;      // Output level meter
+                    plug::IPort        *pSendMeter;     // Send level meter
                 } channel_t;
 
             protected:
@@ -72,6 +78,7 @@ namespace lsp
                 virtual void        destroy() override;
 
             public:
+                virtual void        update_sample_rate(long sr) override;
                 virtual void        update_settings() override;
                 virtual void        process(size_t samples) override;
                 virtual void        dump(dspu::IStateDumper *v) const override;

@@ -53,6 +53,11 @@ namespace lsp
             SEND_NAME("send", "Audio send connection point name"),
             AUDIO_SEND("sout", "Audio send output", 0, "send"),
 
+            METER_GAIN("ilm", "Input level meter", GAIN_AMP_P_24_DB),
+            METER_GAIN("slm", "Send level meter", GAIN_AMP_P_24_DB),
+            METER_GAIN("olm", "Output level meter", GAIN_AMP_P_24_DB),
+
+
             PORTS_END
         };
 
@@ -69,6 +74,13 @@ namespace lsp
             SEND_NAME("send", "Audio send connection point name"),
             AUDIO_SEND("sout_l", "Audio send output left", 0, "send"),
             AUDIO_SEND("sout_r", "Audio send output right", 1, "send"),
+
+            METER_GAIN("ilm_l", "Input level meter Left", GAIN_AMP_P_24_DB),
+            METER_GAIN("slm_l", "Send level meter Left", GAIN_AMP_P_24_DB),
+            METER_GAIN("olm_l", "Output level meter Left", GAIN_AMP_P_24_DB),
+            METER_GAIN("ilm_r", "Input level meter Right", GAIN_AMP_P_24_DB),
+            METER_GAIN("slm_r", "Send level meter Right", GAIN_AMP_P_24_DB),
+            METER_GAIN("olm_r", "Output level meter Right", GAIN_AMP_P_24_DB),
 
             PORTS_END
         };
