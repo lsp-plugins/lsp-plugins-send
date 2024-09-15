@@ -1,9 +1,9 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=TODO: Template Plugin
-GenericName=TODO: Template Plugin
-Comment=TODO: add description what plugin does
+Name=Send Stereo
+GenericName=Send
+Comment=This plugin allows to perform audio send using the shared memory
 Exec=lsp-plugins-send-stereo
 Icon=lsp-plugins
 Terminal=false
