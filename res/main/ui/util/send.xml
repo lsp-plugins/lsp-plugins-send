@@ -55,7 +55,7 @@
 		<cell rows="3" hreduce="true">
 			<ui:if test="ex :olm">
 				<ledmeter vexpand="true" height.min="128" angle="1">
-					<ledchannel id="slm" min="-72 db" max="24 db" log="true" type="rms_peak" peak.visibility="true" value.color="mono"/>
+					<ledchannel id="olm" min="-72 db" max="24 db" log="true" type="rms_peak" peak.visibility="true" value.color="mono"/>
 				</ledmeter>
 			</ui:if>
 			<ui:if test="ex :olm_l">
