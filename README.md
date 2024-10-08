@@ -1,2 +1,3 @@
 # lsp-plugins-send
-Send plugin series
+
+Shared Memory Send plugin series

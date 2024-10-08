@@ -1,0 +1,7 @@
+{
+	"send": {
+		"name": "Send",
+		"description": "This plugin allows to perform audio send using the shared memory"
+	}
+}
+
