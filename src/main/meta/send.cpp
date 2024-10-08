@@ -94,7 +94,7 @@ namespace lsp
             "send",
             "Send",
             B_UTILITIES,
-            "", // TODO: provide ID of the video on YouTube
+            "x336_XxHp2o",
             "This plugin allows to perform audio send using the shared memory"
         };
 
