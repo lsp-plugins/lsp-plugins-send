@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2024 Linux Studio Plugins Project <https://lsp-plug.in/>
- *           (C) 2024 Vladimir Sadovnikov <sadko4u@gmail.com>
+ * Copyright (C) 2025 Linux Studio Plugins Project <https://lsp-plug.in/>
+ *           (C) 2025 Vladimir Sadovnikov <sadko4u@gmail.com>
  *
  * This file is part of lsp-plugins-send
  * Created on: 05 авг 2024 г.
@@ -25,7 +25,7 @@
 
 #define LSP_PLUGINS_SEND_VERSION_MAJOR       1
 #define LSP_PLUGINS_SEND_VERSION_MINOR       0
-#define LSP_PLUGINS_SEND_VERSION_MICRO       3
+#define LSP_PLUGINS_SEND_VERSION_MICRO       4
 
 #define LSP_PLUGINS_SEND_VERSION  \
     LSP_MODULE_VERSION( \
@@ -49,7 +49,7 @@ namespace lsp
             BYPASS,
             IN_GAIN,
             OUT_GAIN,
-            LOG_CONTROL("g_send", "Send gain", U_GAIN_AMP, send::SEND_GAIN),
+            LOG_CONTROL("g_send", "Send gain", "Send gain", U_GAIN_AMP, send::SEND_GAIN),
             SEND_NAME("send", "Audio send connection point name"),
             AUDIO_SEND("sout", "Audio send output", 0, "send"),
 
@@ -70,7 +70,7 @@ namespace lsp
             BYPASS,
             IN_GAIN,
             OUT_GAIN,
-            LOG_CONTROL("g_send", "Send gain", U_GAIN_AMP, send::SEND_GAIN),
+            LOG_CONTROL("g_send", "Send gain", "Send gain", U_GAIN_AMP, send::SEND_GAIN),
             SEND_NAME("send", "Audio send connection point name"),
             AUDIO_SEND("sout_l", "Audio send output left", 0, "send"),
             AUDIO_SEND("sout_r", "Audio send output right", 1, "send"),
