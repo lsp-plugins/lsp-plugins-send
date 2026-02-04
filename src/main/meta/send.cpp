@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2025 Linux Studio Plugins Project <https://lsp-plug.in/>
- *           (C) 2025 Vladimir Sadovnikov <sadko4u@gmail.com>
+ * Copyright (C) 2026 Linux Studio Plugins Project <https://lsp-plug.in/>
+ *           (C) 2026 Vladimir Sadovnikov <sadko4u@gmail.com>
  *
  * This file is part of lsp-plugins-send
  * Created on: 05 авг 2024 г.
@@ -20,6 +20,7 @@
  */
 
 #include <lsp-plug.in/plug-fw/meta/ports.h>
+#include <lsp-plug.in/plug-fw/meta/registry.h>
 #include <lsp-plug.in/shared/meta/developers.h>
 #include <private/meta/send.h>
 
@@ -127,6 +128,7 @@ namespace lsp
             mono_plugin_port_groups,
             &send_bundle
         };
+        LSP_REGISTER_METADATA(send_mono);
 
         const plugin_t send_stereo =
         {
@@ -157,6 +159,8 @@ namespace lsp
             stereo_plugin_port_groups,
             &send_bundle
         };
+        LSP_REGISTER_METADATA(send_stereo);
+
     } /* namespace meta */
 } /* namespace lsp */
 
