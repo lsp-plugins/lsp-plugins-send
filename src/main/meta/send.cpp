@@ -96,7 +96,7 @@ namespace lsp
             "Send",
             B_UTILITIES,
             "x336_XxHp2o",
-            "This plugin allows to perform audio send using the shared memory"
+            "This plugin allows to perform audio send using the shared memory."
         };
 
         const plugin_t send_mono =
