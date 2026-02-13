@@ -123,7 +123,7 @@ namespace lsp
             clap_features_mono,
             E_DUMP_STATE | E_SHM_TRACKING,
             send_mono_ports,
-            "util/send.xml",
+            "plugins/util/send.xml",
             NULL,
             mono_plugin_port_groups,
             &send_bundle
@@ -154,7 +154,7 @@ namespace lsp
             clap_features_stereo,
             E_DUMP_STATE | E_SHM_TRACKING,
             send_stereo_ports,
-            "util/send.xml",
+            "plugins/util/send.xml",
             NULL,
             stereo_plugin_port_groups,
             &send_bundle
