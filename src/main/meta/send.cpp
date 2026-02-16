@@ -126,7 +126,8 @@ namespace lsp
             "plugins/util/send.xml",
             NULL,
             mono_plugin_port_groups,
-            &send_bundle
+            &send_bundle,
+            2
         };
         LSP_REGISTER_METADATA(send_mono);
 
@@ -157,12 +158,10 @@ namespace lsp
             "plugins/util/send.xml",
             NULL,
             stereo_plugin_port_groups,
-            &send_bundle
+            &send_bundle,
+            1
         };
         LSP_REGISTER_METADATA(send_stereo);
 
     } /* namespace meta */
 } /* namespace lsp */
-
-
-
