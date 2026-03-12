@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2025 Linux Studio Plugins Project <https://lsp-plug.in/>
- *           (C) 2025 Vladimir Sadovnikov <sadko4u@gmail.com>
+ * Copyright (C) 2026 Linux Studio Plugins Project <https://lsp-plug.in/>
+ *           (C) 2026 Vladimir Sadovnikov <sadko4u@gmail.com>
  *
  * This file is part of lsp-plugins-send
  * Created on: 05 авг 2024 г.
@@ -20,12 +20,13 @@
  */
 
 #include <lsp-plug.in/plug-fw/meta/ports.h>
+#include <lsp-plug.in/plug-fw/meta/registry.h>
 #include <lsp-plug.in/shared/meta/developers.h>
 #include <private/meta/send.h>
 
 #define LSP_PLUGINS_SEND_VERSION_MAJOR       1
 #define LSP_PLUGINS_SEND_VERSION_MINOR       0
-#define LSP_PLUGINS_SEND_VERSION_MICRO       8
+#define LSP_PLUGINS_SEND_VERSION_MICRO       9
 
 #define LSP_PLUGINS_SEND_VERSION  \
     LSP_MODULE_VERSION( \
@@ -95,7 +96,7 @@ namespace lsp
             "Send",
             B_UTILITIES,
             "x336_XxHp2o",
-            "This plugin allows to perform audio send using the shared memory"
+            "This plugin allows to perform audio send using the shared memory."
         };
 
         const plugin_t send_mono =
@@ -122,11 +123,13 @@ namespace lsp
             clap_features_mono,
             E_DUMP_STATE | E_SHM_TRACKING,
             send_mono_ports,
-            "util/send.xml",
+            "plugins/util/send.xml",
             NULL,
             mono_plugin_port_groups,
-            &send_bundle
+            &send_bundle,
+            2
         };
+        LSP_REGISTER_METADATA(send_mono);
 
         const plugin_t send_stereo =
         {
@@ -152,13 +155,13 @@ namespace lsp
             clap_features_stereo,
             E_DUMP_STATE | E_SHM_TRACKING,
             send_stereo_ports,
-            "util/send.xml",
+            "plugins/util/send.xml",
             NULL,
             stereo_plugin_port_groups,
-            &send_bundle
+            &send_bundle,
+            1
         };
+        LSP_REGISTER_METADATA(send_stereo);
+
     } /* namespace meta */
 } /* namespace lsp */
-
-
-
